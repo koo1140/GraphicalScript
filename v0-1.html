@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GraphScript Renderer</title>
+    <style>
+        body {
+            background-color: #1e1e1e;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #2a2a2a;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        textarea {
+            width: 95%;
+            height: 100px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #555;
+            border-radius: 5px;
+            resize: none;
+            font-size: 16px;
+            background-color: #333;
+            color: #fff;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .graph-container {
+            margin-top: 20px;
+            border: 1px solid #555;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 5px;
+        }
+
+        .node {
+            display: inline-block;
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            font-size: 16px;
+            position: relative;/* Needed for absolute positioning of description */
+            transition: transform 0.3s;
+        }
+
+        .node:hover {
+            transform: scale(1.1); /* Scale up on hover */
+        }
+
+        .node:hover .description {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .description {
+            position: absolute;
+            top: -40px; /* Position above the node */
+            left: 50%; /* Center horizontally */
+            transform: translateX(-50%); /* Center horizontally */
+            width: 200px; /* Adjust the width as needed */
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s linear; /* Smooth transition */
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <textarea id="jsonData" placeholder="Paste your JSON data here"></textarea>
+        <button onclick="pasteCode()">Paste</button>
+        <button onclick="renderGraph()">Render</button>
+        <div id="graphContainer" class="graph-container"></div>
+    </div>
+
+    <script>
+      function pasteCode() {
+          navigator.clipboard.readText()
+              .then(text => {
+                  document.getElementById('jsonData').value = text;
+              })
+              .catch(err => {
+                  console.error('Failed to read clipboard contents: ', err);
+              });
+      }
+      
+      function renderGraph() {
+          const jsonData = document.getElementById('jsonData').value.trim();
+          if (!jsonData) return;
+
+          let data;
+          try {
+              data = JSON.parse(jsonData);
+          } catch (error) {
+              alert('Invalid JSON data!');
+              return;
+          }
+
+          const graphContainer = document.getElementById('graphContainer');
+          graphContainer.innerHTML = '';
+
+          let prevIsOnNewline = false; // Track if the previous node was on a newline
+
+          data.forEach((nodeData, index) => {
+              // Add newline if needed
+              if (nodeData.IsOnNewline && index > 0) {
+                  graphContainer.appendChild(document.createElement('br'));
+                  prevIsOnNewline = true;
+              } else {
+                  prevIsOnNewline = false;
+              }
+
+              if (nodeData.type === 'text') {
+                  const nodeElement = document.createElement('div');
+                  nodeElement.classList.add('node');
+
+                  // Replace ** with <strong> for bold text
+                  let content = nodeData.content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+                  // Replace * with <em> for italic text
+                  content = content.replace(/\*(.*?)\*/g, '<em>$1</em>');
+
+                  // Set content
+                  nodeElement.innerHTML = content;
+
+                  // Set background color
+                  nodeElement.style.backgroundColor = nodeData.color || '#4caf50'; // Default color
+
+                  // Set text color
+                  nodeElement.style.color = nodeData.textColor || '#fff'; // Default text color
+
+                  // Set indentation
+                  nodeElement.style.marginLeft = `${prevIsOnNewline ? nodeData.Indentation * 2 : nodeData.Indentation}px`;
+
+                  // Add description (tooltip)
+                  const descriptionElement = document.createElement('div');
+                  descriptionElement.classList.add('description');
+                  descriptionElement.innerText = nodeData.description || ''; // Default to empty string if description is not provided
+                  nodeElement.appendChild(descriptionElement);
+
+                  // Add to container
+                  graphContainer.appendChild(nodeElement);
+              } else if (nodeData.type === 'image') {
+                  const imageElement = document.createElement('img');
+                  imageElement.src = nodeData.src;
+                  imageElement.alt = nodeData.description || ''; // Use description as alt text
+                  const linkElement = document.createElement('a');
+                  linkElement.href = nodeData.src; // Link to the image URL
+                  linkElement.appendChild(imageElement);
+                  graphContainer.appendChild(linkElement);
+              }
+          });
+      }
+    </script>
+</body>
+</html>
