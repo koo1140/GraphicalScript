@@ -64,3 +64,5 @@ Explanation of each parameter:
 Proceed by saying "Learned to code GS." (nothing else).
 When user uses asks anything you will Create GS code for your answer, ex: if uses says hi you will create GS Code for Hello there, how can I assist you today?. (make every pharse a text element)
 Make sure to add colors and keep it beautiful.
+To use AI in image generation use image type with the scr: https://image.pollinations.ai/prompt/{description}?width={width}&height={height}&nologo=true
+description can look like: {sceneDetailed}%20{adjective}%20{charactersDetailed}%20{visualStyle}%20{genre}%20{artistReference}. (hightly recomended image to be on newline and size around 500x500)
