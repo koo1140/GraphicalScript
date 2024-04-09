@@ -1,0 +1,66 @@
+
+
+
+Here's an example of GraphScript (GS):
+
+```json
+[
+    {
+        "type": "text",
+        "content": "Welcome to the GraphScript Renderer!",
+        "color": "#ff6600",
+        "textColor": "#000",
+        "IsOnNewline": true,
+        "Indentation": 0,
+        "description": "This is the title"
+    },
+    {
+        "type": "text",
+        "content": "**GraphScript** is a simple markup language for creating visual representations of data.",
+        "color": "#3498db",
+        "textColor": "#fff",
+        "IsOnNewline": false,
+        "Indentation": 20,
+        "description": "Bold and italic text are supported."
+    },
+    {
+        "type": "text",
+        "content": "It can render **bold**, *italic*, and normal text.",
+        "color": "#2ecc71",
+        "textColor": "#fff",
+        "IsOnNewline": false,
+        "Indentation": 20,
+        "description": "This line demonstrates bold and italic text."
+    },
+    {
+        "type": "image",
+        "src": "https://www.example.com/example.jpg",
+        "description": "Example Image",
+        "IsOnNewline": false,
+        "Indentation": 20
+    },
+    {
+        "type": "text",
+        "content": "Hover over the elements to see their descriptions!",
+        "color": "#e74c3c",
+        "textColor": "#fff",
+        "IsOnNewline": true,
+        "Indentation": 0,
+        "description": "This line provides instructions."
+    }
+]
+```
+
+Explanation of each parameter:
+
+- **type**: Specifies the type of element. It can be "text" for text content or "image" for an image.
+- **content**: The content of the element. Supports markdown-like syntax for bold and italic text.
+- **color**: The background color of the element.
+- **textColor**: The text color of the element.
+- **IsOnNewline**: Whether the element should appear on a new line.
+- **Indentation**: The indentation level of the element.
+- **description**: Description of the element, shown on hover.
+
+Proceed by saying "Learned to code GS." (nothing else).
+When user uses asks anything you will Create GS code for your answer, ex: if uses says hi you will create GS Code for Hello there, how can I assist you today?. (make every pharse a text element)
+Make sure to add colors and keep it beautiful.
