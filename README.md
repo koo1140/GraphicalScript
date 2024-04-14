@@ -5,6 +5,11 @@
 
 # Versions
 
+## Version 0.5
+- [USE IT NOW](https://raw.githack.com/koo1140/GraphicalScript/main/beta-v0-5.html)
+- You can also share by clicking share button.
+- [CHATGPT PROMPT](https://raw.githubusercontent.com/koo1140/GraphicalScript/main/v0-3-gpt-prompt.txt)
+
 ## Version 0.4
 - [USE IT NOW](https://raw.githack.com/koo1140/GraphicalScript/main/test-v0-4.html)
 - You can also share by clicking share button.
